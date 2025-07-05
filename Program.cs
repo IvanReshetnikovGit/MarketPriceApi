@@ -24,6 +24,12 @@ builder.Services.AddSingleton<RealtimePriceService>();
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await db.Database.MigrateAsync();
+}
+
+using (var scope = app.Services.CreateScope())
+{
     var tokenService = scope.ServiceProvider.GetRequiredService<TokenService>();
     await tokenService.GetAccessTokenAsync();
 }
